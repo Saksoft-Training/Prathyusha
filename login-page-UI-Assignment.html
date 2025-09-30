@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Page</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/128/4901/4901885.png" type="image/x-icon">
+<style>
+    /* hello world styling */
+    * {
+        box-sizing: border-box; 
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    body, html {
+        height: 100%; 
+        overflow: hidden; 
+    }
+
+    .main-wrapper { /* container changed name */
+        display: flex;
+        height: 100vh;
+        width: 100%;
+        animation: fadePage 1s ease-in-out;
+    }
+
+    .left-panel { /* was left-side */
+        flex: 1;
+        background: url('https://images.pexels.com/photos/3184300/pexels-photo-3184300.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260') no-repeat center center/cover;
+        position: relative;
+        animation: leftSlide 1s ease forwards;
+    }
+
+    .left-panel::before { 
+        content: ""; 
+        position: absolute; 
+        top: 0; left: 0; right: 0; bottom: 0; 
+        background: rgba(0,0,0,0.4); 
+    }
+
+    .text-left { /* for the text inside the image left side */
+        position: absolute;
+        color: white; 
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        animation: textAppear 2s ease 1s forwards;
+        opacity: 0;
+    }
+
+    .text-left h1 {
+        font-size: 2.8rem;
+        margin-bottom: 10px;
+    }
+
+    .text-left p {
+        font-size: 1.2rem;
+    }
+
+    .right-side { /* was right side image */
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f8f9fa;
+        animation: rightSlide 1s ease forwards;
+    }
+
+    .form-box { /* for the login-form */
+        width: 90%;
+        max-width: 450px;
+        background: #fff;
+        padding: 50px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        transform: translateY(50px);
+        opacity: 0;
+        animation: boxRise 1s ease 1.2s forwards;
+    }
+
+    .form-box h2 {
+        text-align: center;
+        margin-bottom: 35px;
+        color: #333;
+        font-size: 2rem;
+    }
+
+    .input-div { /* for input fileds */
+        position: relative;
+        margin-bottom: 25px;
+    }
+
+    .input-div input {
+        width: 100%;
+        padding: 14px 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    .input-div input:focus {
+        border-color: #4e54c8;
+        outline: none;
+        box-shadow: 0 0 6px rgba(78,84,200,0.5);
+    }
+
+    .btn-login { /* for login-btn */
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 6px;
+        background: #4e54c8;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn-login:hover {
+        background: #8f94fb;
+    }
+
+    .forgot-link { /* for forgot password */
+        display: block;
+        text-align: right;
+        margin-top: 12px;
+        color: #4e54c8;
+        font-size: 15px;
+        text-decoration: none;
+    }
+
+    .forgot-link:hover { text-decoration: underline; }
+
+    /* animations */
+    @keyframes fadePage { from{opacity:0;} to{opacity:1;} }
+    @keyframes leftSlide { from{transform:translateX(-100%);} to{transform:translateX(0);} }
+    @keyframes rightSlide { from{transform:translateX(100%);} to{transform:translateX(0);} }
+    @keyframes textAppear { to{opacity:1;} }
+    @keyframes boxRise { to{opacity:1; transform:translateY(0);} }
+
+    /* testing some random stuff */
+</style>
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="left-panel">
+        <div class="text-left">
+            <h1>Welcome!</h1>
+            <p>Sign in to access your account</p>
+        </div>
+    </div>
+    <div class="right-side">
+        <form class="form-box">
+            <h2>Login</h2>
+            <div class="input-div">
+                <input type="email" placeholder="Email Address" required>
+            </div>
+            <div class="input-div">
+                <input type="password" placeholder="Password" required>
+            </div>
+            <button class="btn-login" type="button">Sign In</button>
+            <a href="#" class="forgot-link">Forgot Password?</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>
