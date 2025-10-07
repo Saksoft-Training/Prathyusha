@@ -1,0 +1,32 @@
+.app-nav {
+    display: flex;
+    justify-content: space-around;
+    gap: 30px;
+    padding: 15px 0;
+    background: linear-gradient(90deg, #6996b6, #033050);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 15px 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app-nav a {
+    text-decoration: none;
+    color: #e0f7ff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: background 0.3s, transform 0.2s, color 0.3s;
+}
+
+.app-nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+    color: #ffffff;
+}
+
+.app-nav a.active {
+    background-color: #ffffff;
+    color: #0077cc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
