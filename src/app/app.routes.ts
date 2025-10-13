@@ -1,11 +1,10 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { Home } from './home/home';
-import { MovieList } from './movie-list/movie-list';
-import { MovieDetails } from './movie-details/movie-details';
-import { AddMovie } from './add-movie/add-movie';
-import { About } from './about/about';
-// import { FormsModule } from '@angular/forms';
+import { Routes } from '@angular/router';
+import { Home } from './components/home/home';
+import { MovieList } from './components/movie-list/movie-list';
+import { MovieDetails } from './components/movie-details/movie-details';
+import { AddMovie } from './components/add-movie/add-movie';
+import { About } from './components/about/about';
+
 
 export const routes: Routes = [
     { path: '', 

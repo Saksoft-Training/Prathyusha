@@ -1,15 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Movie, MovieType } from '../movie'; 
+import { Movie, MovieType } from '../../services/movie';
 // import { Movie } from '../movie';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-movie',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './add-movie.html',
-  styleUrl: './add-movie.scss'
+  styleUrls: ['./add-movie.scss']
 })
 export class AddMovie {
   private movieService = inject(Movie); // give's access to get , add
@@ -26,15 +26,19 @@ export class AddMovie {
     cast: [],
     rating: 0
   };
-
-  addMovie() {
+  /**
+   * Adds a new movie to the movie list and navigates back to the movies page.
+   * Handles string-to-array conversion for genre and cast.
+   * @returns void
+   */
+  public addMovie(): void {
     if (typeof this.movie.genre === 'string') {
-      this.movie.genre = (this.movie.genre as unknown as string)
+      this.movie.genre = (this.movie.genre as string)
         .split(',')
         .map(g => g.trim());
     }
     if (typeof this.movie.cast === 'string') {
-      this.movie.cast = (this.movie.cast as unknown as string)
+      this.movie.cast = (this.movie.cast as string)
         .split(',')
         .map(c => c.trim());
     }

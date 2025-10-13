@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { LoggerService } from '../logger';
+import { LoggerService } from '../../services/logger';
 
 @Component({
   selector: 'app-about',
   imports: [],
   templateUrl: './about.html',
-  styleUrl: './about.scss'
+  styleUrls: ['./about.scss']
 })
 export class About {
   constructor(private logger: LoggerService) {
