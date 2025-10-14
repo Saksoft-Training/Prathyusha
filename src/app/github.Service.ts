@@ -13,8 +13,13 @@ export class GithubService {
     myThridSubject= new Subject<any>();
     userbehaviourSubject= new BehaviorSubject([]);
     constructor(private http: HttpClient) {}
-
-  fetchData(query: string = 'user'): Observable<any> {
+  /**
+   * Fetch GitHub users based on query string.
+   * Emits events to various subjects for demonstration.
+   * @param query - Search string for GitHub users (default: 'user')
+   * @returns Observable of the HTTP GET request
+   */
+  public fetchData(query: string = 'user'): Observable<any> {
     const params = new HttpParams().set('q', query);
     this.myFirstSubject.next(query);
     this.mySecondSubject.next("hello from second subject");

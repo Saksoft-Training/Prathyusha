@@ -3,8 +3,8 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,   // important
-  imports: [RouterModule],  // ✅ import RouterModule here
+  standalone: true, 
+  imports: [RouterModule], 
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.scss']
 })

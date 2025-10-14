@@ -6,13 +6,10 @@ describe('HighlightMovie', () => {
   let mockRenderer: Renderer2;
 
   beforeEach(() => {
-    // Mock ElementRef
-    mockEl = new ElementRef(document.createElement('div'));
 
-    // Mock Renderer2 with only the methods we need
+    mockEl = new ElementRef(document.createElement('div'));
     mockRenderer = {
       setStyle: jasmine.createSpy('setStyle'),
-      // add any other Renderer2 methods used in your directive
     } as unknown as Renderer2;
   });
   it('should create an instance', () => {
