@@ -1,0 +1,10 @@
+<!-- this is a component witch was created just to Practice for Jasmine session -->
+<h2>GitHub Users</h2>
+
+<ul>
+    @for (user of users; track user.id) {
+    <li>{{ user.login }}</li>
+    } @empty {
+    <li>No users found.</li>
+    }
+</ul>

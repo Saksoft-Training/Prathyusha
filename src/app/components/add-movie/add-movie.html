@@ -1,0 +1,16 @@
+
+<form (ngSubmit)="addMovie()" #f="ngForm">
+    <h2>Add Movie</h2>
+    <input type="text" placeholder="Title" [(ngModel)]="movie.title" name="title" required>
+    <input type="number" placeholder="Year" [(ngModel)]="movie.year" name="year" required>
+    <input type="text" placeholder="Poster URL" [(ngModel)]="movie.posterUrl" name="posterUrl">
+    <input type="text" placeholder="Duration" [(ngModel)]="movie.duration" name="duration">
+    <input type="text" placeholder="Genres (comma separated)" [(ngModel)]="movie.genre" name="genre">
+    <textarea placeholder="Description" [(ngModel)]="movie.description" name="description">
+    </textarea>
+    <input type="text" placeholder="Cast (comma separated)" [(ngModel)]="movie.cast" name="cast">
+    <input type="number" step="0.1" placeholder="Rating" [(ngModel)]="movie.rating" name="rating">
+    <button type="submit">Add Movie</button>
+</form>
+
+<button (click)="random()" type="button">Random</button>
