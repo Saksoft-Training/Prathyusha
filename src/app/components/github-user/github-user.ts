@@ -1,63 +1,77 @@
-  import { Component, OnInit  } from '@angular/core';
-  import { GithubService } from '../../services/github.Service';
-  import { HttpClientModule } from '@angular/common/http';
-  import { CommonModule } from '@angular/common';
-  import { FormsModule } from '@angular/forms';
-  import { Subscription } from 'rxjs';
+//#region Imports
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { GithubService } from '../../services/github.Service';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+//#endregion
 
-  @Component({
-    selector: 'app-github-user',
-    imports: [FormsModule, CommonModule, HttpClientModule],
-    templateUrl: './github-user.html',
-    styleUrls: ['./github-user.scss']
-  })
-  export class GithubUser implements OnInit{
-    public users: any[] = [];
-    subscrption1: Subscription;
-    subscrption2: Subscription;   
-    subscrption3: Subscription;
-    userSuscription: Subscription;
-      
+//#region Component Metadata
+@Component({
+  selector: 'app-github-user',
+  imports: [FormsModule, CommonModule, HttpClientModule],
+  templateUrl: './github-user.html',
+  styleUrls: ['./github-user.scss']
+})
+//#endregion
 
-    constructor(private githubService: GithubService ) {
+//#region GithubUser Component
+export class GithubUser implements OnInit, OnDestroy {
 
-      this.subscrption1=this.githubService.myFirstSubject.subscribe({
-        next:(data)=>{ console.log(data)},
-      })
-      this.subscrption2=this.githubService.myFirstSubject.subscribe({
-        next:(data)=>{ console.log(data)},
-      })
-      this.subscrption3=this.githubService.myFirstSubject.subscribe({
-        next:(data)=>{ console.log(data)},
-      })
-      this.userSuscription=this.githubService.userbehaviourSubject.subscribe({
-        next:(data)=>{ console.log(data)},
-      })
-    }
-    /**
-   * Lifecycle hook that runs on component initialization.
-   * Fetches GitHub users and updates userBehaviourSubject.
-   */
-    public ngOnInit(): void  {
-    this.githubService.fetchData('anshu').subscribe(
-      (res: any) => {
+  //#region Properties
+  public users: any[] = [];
+
+  private subscription1!: Subscription;
+  private subscription2!: Subscription;
+  private subscription3!: Subscription;
+  private userSubscription!: Subscription;
+  //#endregion
+
+  //#region Constructor
+  constructor(private githubService: GithubService) {
+    this.subscription1 = this.githubService.myFirstSubject.subscribe({
+      next: (data) => console.log('subscription1:', data)
+    });
+
+    this.subscription2 = this.githubService.myFirstSubject.subscribe({
+      next: (data) => console.log('subscription2:', data)
+    });
+
+    this.subscription3 = this.githubService.myFirstSubject.subscribe({
+      next: (data) => console.log('subscription3:', data)
+    });
+
+    this.userSubscription = this.githubService.userbehaviourSubject.subscribe({
+      next: (data) => console.log('userBehaviour:', data)
+    });
+  }
+  //#endregion
+
+  //#region Lifecycle Hooks
+  public ngOnInit(): void {
+    this.githubService.fetchData('anshu').subscribe({
+      next: (res: any) => {
         this.users = res.items;
         this.githubService.userbehaviourSubject.next(res.items);
-      }
-      ,
-      (error) => {
+      },
+      error: (error) => {
         console.error('Error fetching data', error);
-      },  () => {
+      },
+      complete: () => {
         console.log('Completed fetching data from GitHub API');
-      } 
-    );
+      }
+    });
   }
-  /**
-   * Lifecycle hook called when component is destroyed.
-   * Completes destroy$ to unsubscribe from all observables.
-   */
-    public ngOnDestroy() :void{
-      this.subscrption3.unsubscribe();
-      this.githubService.myThridSubject;
-    }
+
+  public ngOnDestroy(): void {
+    this.subscription1.unsubscribe();
+    this.subscription2.unsubscribe();
+    this.subscription3.unsubscribe();
+    this.userSubscription.unsubscribe();
   }
+  //#endregion
+
+}
+//#endregion
+
