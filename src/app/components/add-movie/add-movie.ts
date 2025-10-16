@@ -28,26 +28,25 @@ export class AddMovie implements OnInit, OnDestroy {
 
   //#region Component Properties
   public movie: MovieType = {                          // Movie model bound to form
-    id: 0,
-    title: '',
-    year: new Date().getFullYear(),
-    posterUrl: '',
+    cast: [],
+    description: '',
     duration: '',
     genre: [],
-    description: '',
-    cast: [],
-    rating: 0
+    id: 0,
+    posterUrl: '',
+    rating: 0,
+    title: '',
+    year: new Date().getFullYear(),
   };
   //#endregion
 
   //#region Constructor
   constructor(private readonly githubService: GithubService) {
-    //#region Subscribe to GitHub subjects
-    this.githubService.mySecondSubject
+    this.githubService.messageSubject
       .pipe(takeUntil(this.destroy$))
       .subscribe(data => console.log('mySecondSubject:', data));
 
-    this.githubService.userbehaviourSubject
+    this.githubService.userListBehaviour
       .pipe(takeUntil(this.destroy$))
       .subscribe(data => console.log('userbehaviourSubject:', data));
     //#endregion
@@ -102,7 +101,7 @@ export class AddMovie implements OnInit, OnDestroy {
    * Emits a demo array through mySecondSubject for testing purposes
    */
   public random(): void {
-    this.githubService.mySecondSubject.next([1, 2, 3, 4]);
+    this.githubService.messageSubject.next('Hello, from add-movie component');
   }
   //#endregion
 

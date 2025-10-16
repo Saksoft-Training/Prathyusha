@@ -1,9 +1,10 @@
 //#region Imports
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Movie, MovieType } from '../../services/movie';
 import { CommonModule } from '@angular/common';
 import { GithubService } from '../../services/github.Service';
+import { Subscription } from 'rxjs';
 //#endregion
 
 //#region Component Metadata
@@ -16,38 +17,38 @@ import { GithubService } from '../../services/github.Service';
 //#endregion
 
 //#region Home Component
-export class Home implements OnInit {
+export class Home implements OnInit, OnDestroy {
 
   //#region Properties
-  movies: MovieType[] = []; // Store movie details coming from service
+  movies: MovieType[] = []; 
   private movieService = inject(Movie);
   private router = inject(Router);
+
+  private notificationSub: Subscription; 
   //#endregion
 
   //#region Constructor
   constructor(private githubService: GithubService) {
-    this.githubService.myThridSubject.subscribe({
+    this.notificationSub = this.githubService.notificationSubject.subscribe({
       next: (data) => console.log('myThridSubject:', data)
     });
   }
   //#endregion
 
   //#region Lifecycle Hooks
-  /** 
-   * Runs once the component initializes.
-   * Loads the first 4 movies from the service.
-   */
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.movies = this.movieService.getAll().slice(0, 4);
+  }
+
+  /** Clean up subscriptions to prevent memory leaks */
+  public ngOnDestroy(): void {
+    this.notificationSub.unsubscribe();
   }
   //#endregion
 
   //#region Component Methods
-  /**
-   * Navigates to the movie details page based on ID.
-   * @param id - Movie ID to navigate to.
-   */
-  goToDetails(id: number): void {
+  /** Navigate to the movie details page based on ID */
+  public goToDetails(id: number): void {
     this.router.navigate(['/movies', id]);
   }
   //#endregion

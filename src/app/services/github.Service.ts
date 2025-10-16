@@ -17,11 +17,11 @@ export class GithubService {
   //#region Properties
   private baseUrl = 'https://api.github.com/search/users?q=user+in:name,description,login+sort:stars-desc';
 
-  /** Subjects for demonstration purposes */
-  public myFirstSubject = new Subject<any>();
-  public mySecondSubject = new Subject<any>();
-  public myThridSubject = new Subject<any>();
-  public userbehaviourSubject = new BehaviorSubject<any[]>([]);
+  /** Subjects for demonstration and communication */
+  public searchQuerySubject = new Subject<string>();          
+  public messageSubject = new Subject<string>();              
+  public notificationSubject = new Subject<string>();         
+  public userListBehaviour = new BehaviorSubject<any[]>([]);  
   //#endregion
 
   //#region Constructor
@@ -41,9 +41,9 @@ export class GithubService {
     const params = new HttpParams().set('q', query);
 
     // Emit demo events
-    this.myFirstSubject.next(query);
-    this.mySecondSubject.next("hello from second subject");
-    this.myThridSubject.next("hello from thrid subject");
+    this.searchQuerySubject.next(query);
+    this.messageSubject.next('Hello from message subject');
+    this.notificationSubject.next('Hello from notification subject');
 
     return this.http.get(this.baseUrl, { params });
   }

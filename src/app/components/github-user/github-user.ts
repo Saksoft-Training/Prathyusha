@@ -7,6 +7,15 @@ import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 //#endregion
 
+//#region Models
+export interface GithubUser {
+  login: string; 
+}
+export interface GithubResponse {
+  items: GithubUser[];
+}
+//#endregion
+
 //#region Component Metadata
 @Component({
   selector: 'app-github-user',
@@ -20,30 +29,32 @@ import { Subscription } from 'rxjs';
 export class GithubUser implements OnInit, OnDestroy {
 
   //#region Properties
-  public users: any[] = [];
+  public users: GithubUser[] = [];
 
-  private subscription1!: Subscription;
-  private subscription2!: Subscription;
-  private subscription3!: Subscription;
-  private userSubscription!: Subscription;
+  private searchQuerySub: Subscription;
+  private messageSub: Subscription;
+  private notificationSub: Subscription;
+  private userListBehaviourSub: Subscription;
   //#endregion
 
   //#region Constructor
   constructor(private githubService: GithubService) {
-    this.subscription1 = this.githubService.myFirstSubject.subscribe({
-      next: (data) => console.log('subscription1:', data)
+
+    // Subscribe to subjects from GithubService
+    this.searchQuerySub = this.githubService.searchQuerySubject.subscribe({
+      next: (data) => console.log('searchQuerySubject:', data)
     });
 
-    this.subscription2 = this.githubService.myFirstSubject.subscribe({
-      next: (data) => console.log('subscription2:', data)
+    this.messageSub = this.githubService.messageSubject.subscribe({
+      next: (data) => console.log('messageSubject:', data)
     });
 
-    this.subscription3 = this.githubService.myFirstSubject.subscribe({
-      next: (data) => console.log('subscription3:', data)
+    this.notificationSub = this.githubService.notificationSubject.subscribe({
+      next: (data) => console.log('notificationSubject:', data)
     });
 
-    this.userSubscription = this.githubService.userbehaviourSubject.subscribe({
-      next: (data) => console.log('userBehaviour:', data)
+    this.userListBehaviourSub = this.githubService.userListBehaviour.subscribe({
+      next: (data) => console.log('userListBehaviour:', data)
     });
   }
   //#endregion
@@ -51,9 +62,9 @@ export class GithubUser implements OnInit, OnDestroy {
   //#region Lifecycle Hooks
   public ngOnInit(): void {
     this.githubService.fetchData('anshu').subscribe({
-      next: (res: any) => {
+      next: (res: GithubResponse) => { 
         this.users = res.items;
-        this.githubService.userbehaviourSubject.next(res.items);
+        this.githubService.userListBehaviour.next(res.items);
       },
       error: (error) => {
         console.error('Error fetching data', error);
@@ -65,13 +76,12 @@ export class GithubUser implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.subscription1.unsubscribe();
-    this.subscription2.unsubscribe();
-    this.subscription3.unsubscribe();
-    this.userSubscription.unsubscribe();
+    this.searchQuerySub.unsubscribe();
+    this.messageSub.unsubscribe();
+    this.notificationSub.unsubscribe();
+    this.userListBehaviourSub.unsubscribe();
   }
   //#endregion
 
 }
 //#endregion
-

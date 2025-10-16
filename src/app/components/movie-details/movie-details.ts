@@ -18,12 +18,11 @@ import { CommonModule } from '@angular/common';
 export class MovieDetails implements OnInit {
 
   //#region Properties
-  public movie?: MovieType;
+  public movie: MovieType | undefined;
+  public idString: string | null = null;
 
   /** ActivatedRoute to access route parameters */
   private route = inject(ActivatedRoute);
-
-  /** Movie service to get movie data */
   private movieService = inject(Movie);
   //#endregion
 
@@ -35,8 +34,8 @@ export class MovieDetails implements OnInit {
   public ngOnInit(): void {
     const idString = this.route.snapshot.paramMap.get('id'); // Get id from URL
 
-    if (idString) {
-      const id = parseInt(idString, 10); // Convert string to number
+    if (this.idString) {
+      const id = parseInt(this.idString, 10); 
       this.movie = this.movieService.getById(id); // Fetch movie by id
     }
   }
