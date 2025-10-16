@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 
 //#region Models
 export interface GithubUser {
+  id: number;       // Added id for trackBy
   login: string; 
 }
 export interface GithubResponse {
@@ -26,60 +27,50 @@ export interface GithubResponse {
 //#endregion
 
 //#region GithubUser Component
-export class GithubUser implements OnInit, OnDestroy {
+export class GithubUserComponent implements OnInit, OnDestroy {
 
   //#region Properties
   public users: GithubUser[] = [];
-
-  private searchQuerySub: Subscription;
-  private messageSub: Subscription;
-  private notificationSub: Subscription;
-  private userListBehaviourSub: Subscription;
+  private subscriptions: Subscription = new Subscription();
   //#endregion
 
   //#region Constructor
   constructor(private githubService: GithubService) {
-
-    // Subscribe to subjects from GithubService
-    this.searchQuerySub = this.githubService.searchQuerySubject.subscribe({
-      next: (data) => console.log('searchQuerySubject:', data)
-    });
-
-    this.messageSub = this.githubService.messageSubject.subscribe({
-      next: (data) => console.log('messageSubject:', data)
-    });
-
-    this.notificationSub = this.githubService.notificationSubject.subscribe({
-      next: (data) => console.log('notificationSubject:', data)
-    });
-
-    this.userListBehaviourSub = this.githubService.userListBehaviour.subscribe({
-      next: (data) => console.log('userListBehaviour:', data)
-    });
+    this.subscriptions.add(
+      this.githubService.searchQuerySubject.subscribe(data => console.log('searchQuerySubject:', data))
+    );
+    this.subscriptions.add(
+      this.githubService.messageSubject.subscribe(data => console.log('messageSubject:', data))
+    );
+    this.subscriptions.add(
+      this.githubService.notificationSubject.subscribe(data => console.log('notificationSubject:', data))
+    );
+    this.subscriptions.add(
+      this.githubService.userListBehaviour.subscribe(data => console.log('userListBehaviour:', data))
+    );
   }
   //#endregion
 
   //#region Lifecycle Hooks
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.githubService.fetchData('anshu').subscribe({
       next: (res: GithubResponse) => { 
         this.users = res.items;
         this.githubService.userListBehaviour.next(res.items);
       },
-      error: (error) => {
-        console.error('Error fetching data', error);
-      },
-      complete: () => {
-        console.log('Completed fetching data from GitHub API');
-      }
+      error: (error) => console.error('Error fetching data', error),
+      complete: () => console.log('Completed fetching data from GitHub API')
     });
   }
 
-  public ngOnDestroy(): void {
-    this.searchQuerySub.unsubscribe();
-    this.messageSub.unsubscribe();
-    this.notificationSub.unsubscribe();
-    this.userListBehaviourSub.unsubscribe();
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe(); // automatically unsubscribes all
+  }
+  //#endregion
+
+  //#region TrackBy Function
+  trackById(index: number, user: GithubUser): number {
+    return user.id;
   }
   //#endregion
 

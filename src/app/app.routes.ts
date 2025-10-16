@@ -5,7 +5,7 @@ import { MovieList } from './components/movie-list/movie-list';
 import { MovieDetails } from './components/movie-details/movie-details';
 import { AddMovie } from './components/add-movie/add-movie';
 import { About } from './components/about/about';
-import { GithubUser } from './components/github-user/github-user';
+import { GithubUserComponent } from './components/github-user/github-user';
 
 export const routes: Routes = [
     { path: '', 
@@ -24,7 +24,7 @@ export const routes: Routes = [
         component: About
     },
     { path: 'github', 
-        component: GithubUser 
+        component: GithubUserComponent 
     }, 
     { path: '**', 
         redirectTo: '' 

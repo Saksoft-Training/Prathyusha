@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoggerService } from './logger';
+import { BehaviorSubject, Observable } from 'rxjs';
 //#endregion
 
 //#region MovieType Interface
@@ -27,7 +28,8 @@ export interface MovieType {
 //#region Movie Service
 export class Movie {
   //#region Properties
-  private movies: MovieType[] = [];
+  private moviesSubject = new BehaviorSubject<MovieType[]>([]);
+  public movies$: Observable<MovieType[]> = this.moviesSubject.asObservable();
   private moviesJsonPath = 'assets/movies.json';
   //#endregion
 
@@ -40,12 +42,12 @@ export class Movie {
   //#region Private Methods
   /**
    * Loads movies from the JSON file located in assets folder.
-   * Populates the local movies array.
+   * Populates the BehaviorSubject for subscribers.
    */
   private loadMovies(): void {
     this.http.get<MovieType[]>(this.moviesJsonPath).subscribe({
       next: (data) => {
-        this.movies = data;
+        this.moviesSubject.next(data);
         this.logger.log('Movies loaded from JSON');
       },
       error: (err) => {
@@ -57,12 +59,12 @@ export class Movie {
 
   //#region Public Methods
   /**
-   * Returns a copy of all movies.
+   * Returns a copy of all movies currently loaded.
    * @returns MovieType[] - Array of movies
    */
   public getAll(): MovieType[] {
     this.logger.log('Fetched all movies');
-    return [...this.movies];
+    return [...this.moviesSubject.getValue()];
   }
 
   /**
@@ -72,32 +74,38 @@ export class Movie {
    */
   public getById(id: number): MovieType | undefined {
     this.logger.log('Clicked on movie card');
-    return this.movies.find(m => m.id === id);
+    return this.moviesSubject.getValue().find(m => m.id === id);
   }
 
   /**
    * Adds a new movie to the movie list.
    * Generates a new ID if needed.
+   * Updates the BehaviorSubject so subscribers get the updated list.
    * @param movie - MovieType object to add
    */
   public add(movie: MovieType): void {
+    const currentMovies = [...this.moviesSubject.getValue()];
     let newId = 1;
-    if (this.movies.length > 0) {
-      newId = this.movies[this.movies.length - 1].id + 1;
+    if (currentMovies.length > 0) {
+      newId = currentMovies[currentMovies.length - 1].id + 1;
     }
     movie.id = newId;
-    this.movies.push(movie);
+    currentMovies.push(movie);
+    this.moviesSubject.next(currentMovies);
     this.logger.log('Added new movie');
   }
 
   /**
    * Removes a movie by its ID.
+   * Updates the BehaviorSubject so subscribers get the updated list.
    * @param id - ID of the movie to remove
    */
   public remove(id: number): void {
-    const index = this.movies.findIndex(m => m.id === id);
+    const currentMovies = [...this.moviesSubject.getValue()];
+    const index = currentMovies.findIndex(m => m.id === id);
     if (index !== -1) {
-      this.movies.splice(index, 1);
+      currentMovies.splice(index, 1);
+      this.moviesSubject.next(currentMovies);
       this.logger.log(`Removed movie with id: ${id}`);
     }
   }

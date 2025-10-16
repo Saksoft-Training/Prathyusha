@@ -26,10 +26,15 @@ export class MovieList implements OnInit {
   //#region Lifecycle Hooks
   /**
    * Runs when the component initializes.
-   * Fetches all movies from the service.
+   * Subscribes to the movies$ observable from the service to get the movie list.
    */
   public ngOnInit(): void {
-    this.movies = this.movieService.getAll();
+    this.movieService.movies$.subscribe({
+      next: (data) => {
+        this.movies = data;
+      },
+      error: (err) => console.error('Failed to load movies:', err)
+    });
   }
   //#endregion
 
@@ -51,7 +56,7 @@ export class MovieList implements OnInit {
   public removeMovie(id: number, event: Event): void {
     event.stopPropagation();        // Prevent navigating to details
     this.movieService.remove(id);   // Remove from service
-    this.movies = this.movieService.getAll(); // Refresh the list
+    // No need to call getAll() because movies$ emits updated value automatically
   }
   //#endregion
 

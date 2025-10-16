@@ -2,9 +2,9 @@
 <h2>GitHub Users</h2>
 
 <ul>
-    @for (user of users; track user.id) {
-    <li>{{ user.login }}</li>
-    } @empty {
-    <li>No users found.</li>
-    }
+    <li *ngFor="let user of users; trackBy: trackById">
+        {{ user.login }}
+    </li>
+
+    <li *ngIf="users.length === 0">No users found.</li>
 </ul>
