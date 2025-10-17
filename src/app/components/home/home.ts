@@ -20,11 +20,20 @@ import { Subscription } from 'rxjs';
 export class Home implements OnInit, OnDestroy {
 
   //#region Properties
-  movies: MovieType[] = []; 
+  /** Holds the list of movies to display on the home page */
+  public movies: MovieType[] = []; 
+
+  /** Injected Movie service to access movie data */
   private movieService = inject(Movie);
+
+  /** Injected Router service for navigation */
   private router = inject(Router);
 
+  /** Subscription for GitHub notifications */
   private notificationSub: Subscription; 
+
+  /** Subscription for movies observable */
+  private movieSub?: Subscription;
   //#endregion
 
   //#region Constructor
@@ -36,18 +45,33 @@ export class Home implements OnInit, OnDestroy {
   //#endregion
 
   //#region Lifecycle Hooks
+  /**
+   * Initializes the component.
+   * Subscribes to movies$ from Movie service and loads the first 4 movies.
+   */
   public ngOnInit(): void {
-    this.movies = this.movieService.getAll().slice(0, 4);
+    this.movieSub = this.movieService.movies$.subscribe({
+      next: (data) => {
+        this.movies = data.slice(0, 4); // Display first 4 movies
+      },
+      error: (err) => console.error('Error loading movies:', err)
+    });
   }
 
-  /** Clean up subscriptions to prevent memory leaks */
+  /**
+   * Cleans up active subscriptions to prevent memory leaks.
+   */
   public ngOnDestroy(): void {
     this.notificationSub.unsubscribe();
+    this.movieSub?.unsubscribe();
   }
   //#endregion
 
   //#region Component Methods
-  /** Navigate to the movie details page based on ID */
+  /**
+   * Navigates to the details page for a selected movie.
+   * @param id - Movie ID to navigate to.
+   */
   public goToDetails(id: number): void {
     this.router.navigate(['/movies', id]);
   }
