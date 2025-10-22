@@ -1,0 +1,12 @@
+<h2>Recommended Movies</h2>
+<div class="movie-list">
+    @for (movie of movies; track movie.id) {
+    <div class="movie-card" (click)="goToDetails(movie.id)">
+        <img [src]="movie.posterUrl" [alt]="movie.title" alt="Movie Poster" />
+        <h3>{{ movie.title }}</h3>
+        <p>{{ movie.genre.join(', ') }}</p>
+    </div>
+    } @empty {
+    <p>No movies available.</p>
+    }
+</div>

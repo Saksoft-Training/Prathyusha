@@ -1,0 +1,259 @@
+@use "sass:color";
+
+// Variables
+$primary-color: #0077cc;
+$primary-dark: #005fa3;
+$secondary-color: #e6f2ff;
+$secondary-dark: #cce5ff;
+$text-color: #003366;
+$heading-color: #002244;
+$button-remove-bg: #cc3300;
+$button-remove-hover: #990000;
+$border-radius: 15px;
+$card-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+$card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.2);
+$blur-overlay: rgba(255, 255, 255, 0.6);
+
+// Global styles
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: $text-color;
+    margin: 0;
+    padding: 0;
+    background-color: #f9faff;
+}
+
+a {
+    text-decoration: none;
+    color: $primary-color;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    font-family: inherit;
+}
+
+// Navbar styles
+.app-nav {
+    display: flex;
+    justify-content: space-around;
+    gap: 30px;
+    padding: 15px 0;
+    background: linear-gradient(90deg, #6996b6, #033050);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 $border-radius $border-radius;
+
+    a {
+        text-decoration: none;
+        color: #e0f7ff;
+        font-weight: 600;
+        font-size: 1.1rem;
+        padding: 8px 15px;
+        border-radius: 8px;
+        transition: background 0.3s, transform 0.2s, color 0.3s;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+            color: #ffffff;
+        }
+
+        &.active {
+            background-color: #ffffff;
+            color: $primary-color;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+    }
+}
+
+// Main content layout
+.main-content {
+    max-width: 1200px;
+    margin: 80px auto 40px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+// Movie List & Cards
+.movie-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.movie-card {
+    background: linear-gradient(145deg, #d9f0ff, #b3e0ff);
+    border-radius: $border-radius;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    padding-bottom: 20px;
+    min-height: 360px;
+    width: 100%;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: $card-shadow-hover;
+    }
+
+    img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-top-left-radius: $border-radius;
+        border-top-right-radius: $border-radius;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    h3 {
+        font-size: 1.2rem;
+        margin: 10px 0 5px;
+        color: $heading-color;
+    }
+
+    p {
+        font-size: 0.95rem;
+        color: #003366;
+        margin: 0 10px;
+    }
+
+    button {
+        padding: 8px 15px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #ffffff;
+        background: linear-gradient(90deg, $button-remove-bg, $button-remove-hover);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+
+        &:hover {
+            background: linear-gradient(90deg,
+                    $button-remove-hover,
+                    color.adjust($button-remove-hover, $lightness: -20%));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+    }
+}
+
+// Add Movie Form
+form {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(145deg, $secondary-color, $secondary-dark);
+    border-radius: $border-radius;
+    box-shadow: $card-shadow;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    color: $text-color;
+
+    h2 {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: $heading-color;
+    }
+
+    input,
+    textarea {
+        padding: 12px 15px;
+        border: 1px solid color.adjust($secondary-dark, $lightness: 10%);
+        border-radius: 10px;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+
+        &:focus {
+            border-color: $primary-color;
+            box-shadow: 0 0 8px rgba(0, 119, 204, 0.4);
+        }
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    button {
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #ffffff;
+        background: linear-gradient(90deg, $primary-color, $primary-dark);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+
+        &:hover {
+            background: linear-gradient(90deg,
+                    $primary-dark,
+                    color.adjust($primary-dark, $lightness: -15%));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: color.adjust($primary-color, $lightness: 30%);
+    }
+}
+
+// About Page
+.about-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(145deg, $secondary-color, $secondary-dark);
+    border-radius: $border-radius;
+    box-shadow: $card-shadow;
+    line-height: 1.6;
+    color: $text-color;
+    position: relative;
+    overflow: hidden;
+
+    h2 {
+        text-align: center;
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+        color: #002244;
+    }
+
+    p {
+        margin: 15px 0;
+        font-size: 1.1rem;
+    }
+
+    ul {
+        margin: 20px 0;
+        padding-left: 25px;
+
+        li {
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+            position: relative;
+
+            &::before {
+                content: "🎬";
+                position: absolute;
+                left: -25px;
+                top: 0;
+            }
+        }
+    }
+}

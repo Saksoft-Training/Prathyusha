@@ -1,0 +1,12 @@
+<h2>All Movies</h2>
+<div class="movie-list">
+    @for (movie of movies; track movie.id) { <div class="movie-card" (click)="goToDetails(movie.id)">
+        <img [src]="movie.posterUrl" [alt]="movie.title" alt="movie-list" />
+        <h3>{{ movie.title }}</h3>
+        <p>{{ movie.genre.join(', ') }}</p>
+        <button (click)="removeMovie(movie.id, $event)">Remove</button>
+</div>
+} @empty {
+<p>No movies available.</p>
+}>
+</div>

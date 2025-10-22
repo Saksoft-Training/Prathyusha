@@ -1,0 +1,10 @@
+<!-- this is a component witch was created just to Practice for Jasmine session -->
+<h2>GitHub Users</h2>
+
+<ul>
+    <li *ngFor="let user of users; trackBy: trackById">
+        {{ user.login }}
+    </li>
+
+    <li *ngIf="users.length === 0">No users found.</li>
+</ul>
